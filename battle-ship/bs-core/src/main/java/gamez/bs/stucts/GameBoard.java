@@ -29,13 +29,16 @@ public class GameBoard {
     // Flag to freeze the placement, on game initialization
     private boolean initialized;
 
+    // Default constructor to disable non-package access
+    GameBoard() {}
+
     /**
      * Game placement for the type of ship
      *
      * @param shipType      ship type
      * @param placement     placement from and to coordinates
      */
-    public void place (ShipTypes shipType, Placement placement) throws StateException {
+    void place (ShipTypes shipType, Placement placement) throws StateException {
 
         if (initialized)
             throw new StateException("Initialized game cannot be modified");
@@ -118,7 +121,7 @@ public class GameBoard {
      * @return  int[][]         Copy of the game grid, on which game is being played
      * @throws  StateException  Exception encountered while initialization
      */
-    public int[][] initialize() throws StateException {
+    int[][] initialize() throws StateException {
 
         // If initialized return a copy of the grid
         if (initialized) gameGrid.clone();
@@ -142,9 +145,10 @@ public class GameBoard {
     /**
      * Play the turn with the specified coordinates
      *
+     * @param   c               Coordinates to be played by the user
      * @return  TurnTypes       Type of the turn playes (hit, miss, destroyed)
      */
-    public TurnTypes play(Coordinates c) throws StateException {
+    TurnTypes play(Coordinates c) throws StateException {
 
         if (!initialized) initialize();
 
@@ -199,6 +203,9 @@ public class GameBoard {
 
         private int x() { return x; }
         private int y() { return y; }
+
+        @Override
+        public String toString() { return "(" + x + ", " + y + ")"; }
     }
 
     /**

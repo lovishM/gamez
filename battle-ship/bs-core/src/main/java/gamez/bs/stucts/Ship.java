@@ -12,12 +12,14 @@ public class Ship {
     private ShipTypes type;
     private int health;
 
-    public Ship(ShipTypes type) {
+    Ship(ShipTypes type) {
         this.type = type;
         this.health = type.size();
     }
 
-    public ShipTypes type() { return type; }
-    public int hit() { return (this.health > 0) ? --health : 0; }
+    ShipTypes type() { return type; }
+    int hit() { return (this.health > 0) ? --health : 0; }
+
+    // Needed ??
     public int health() { return health; }
 }
