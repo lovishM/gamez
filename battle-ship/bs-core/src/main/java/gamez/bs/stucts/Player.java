@@ -27,21 +27,33 @@ public class Player {
 
     public String name() { return name; }
     public String id() { return id; }
-    public int myFullHits() { return myFullHits; }
+
+    /**
+     * A getter to find the success of this player
+     *
+     * @return  int             Returns the number of DESTROYED hits achieved
+     */
+    int myFullHits() { return myFullHits; }
 
     // Place ships on the board
-    public void placeShip(ShipTypes type, GameBoard.Placement placement) throws StateException { this.board.place(type, placement); }
+    void placeShip(ShipTypes type, GameBoard.Placement placement) throws StateException { this.board.place(type, placement); }
 
     // Get the board ready to play
-    public void getReady() throws StateException { this.board.initialize(); }
+    void getReady() throws StateException { this.board.initialize(); }
 
     // Show the board on the user screen
-    public int[][] seeBoard() { return this.board.getCurrentGridPlacement(); }
+    int[][] seeBoard() { return this.board.getCurrentGridPlacement(); }
 
     // Play the user's turn
-    public TurnTypes hisTurn(GameBoard.Coordinates c) throws StateException { return this.board.play(c); }
+    TurnTypes hisTurn(GameBoard.Coordinates c) throws StateException { return this.board.play(c); }
 
-    public int consumeMyTurn(TurnTypes type) {
+    /**
+     * Evaluate this player's turn and measure his success
+     *
+     * @param   type            Turn type received on another player's board
+     * @return  int             Returns the number of DESTROYED hits achieved
+     */
+    int consumeMyTurn(TurnTypes type) {
         if (type == TurnTypes.DESTROYED) {
             myFullHits++;
         }

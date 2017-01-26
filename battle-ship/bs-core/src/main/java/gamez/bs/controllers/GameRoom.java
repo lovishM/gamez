@@ -30,6 +30,12 @@ public class GameRoom {
         Optional<Player> optionalPlayer = lounge.stream().filter(p -> p.id().equals(player.id())).findFirst();
         optionalPlayer.ifPresent(p -> lounge.remove(p));
 
+        // Return game, if the player is already part of a game
+        Optional<Game> optionalGame = runningGames.stream().filter(g -> g.isPresent(player)).findFirst();
+        if (optionalGame.isPresent()) {
+            return optionalGame.get();
+        }
+
         // If lounge is not empty start a game
         if (!lounge.isEmpty()) {
             Game game = new Game(player, lounge.pollFirst());

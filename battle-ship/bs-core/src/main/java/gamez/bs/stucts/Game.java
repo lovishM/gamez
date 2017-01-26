@@ -40,10 +40,33 @@ public class Game {
         }
     }
 
-    public Player getPlayer(Player player) {
-        if (!isPresent(player)) return null;
+    /**
+     * Place the ships on the board having provided placement
+     *
+     * @param   player              Player trying to place his/her ship
+     * @param   ship                Type of the ship to be placed
+     * @param   placement           Board placement
+     * @throws  StateException      Exception encountered while operating on the board
+     */
+    public void placeShip(Player player, ShipTypes ship, GameBoard.Placement placement) throws StateException {
+        if (!isPresent(player))
+            throw new StateException("Player trying to place the ship not found");
 
-        return player.equals(firstPlayer) ? firstPlayer : secondPlayer;
+        player.placeShip(ship, placement);
+    }
+
+    /**
+     * Watch the board of the player
+     *
+     * @param   player              Player trying to see his board
+     * @return  int[][]             Display the board as a 2-D array
+     * @throws  StateException      Exception encountered while operating on the board
+     */
+    public int[][] seeBoard(Player player) throws StateException {
+        if (!isPresent(player))
+            throw new StateException("Player trying to see board positioning not found");
+
+        return player.seeBoard();
     }
 
     /**
@@ -82,6 +105,12 @@ public class Game {
         return state;
     }
 
+    /**
+     * Check if the player provided is part of this game
+     *
+     * @param   player              Player to be checked with the game
+     * @return  boolean             Returns true if player is part of the game
+     */
     public boolean isPresent(Player player) { return (player.equals(firstPlayer) || player.equals(secondPlayer)); }
 
     // TODO Improve the logic, I'm not happy yet
