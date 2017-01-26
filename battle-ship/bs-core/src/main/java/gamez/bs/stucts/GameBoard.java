@@ -32,7 +32,7 @@ public class GameBoard {
     /**
      * Game placement for the type of ship
      *
-     * @param ship          ship type
+     * @param shipType      ship type
      * @param placement     placement from and to coordinates
      */
     public void place (ShipTypes shipType, Placement placement) throws StateException {
@@ -65,7 +65,7 @@ public class GameBoard {
         // Initialize the grid with empty
         for (int i = 0; i < MAX_X_SIZE; i++ )
             for (int j = 0; j < MAX_Y_SIZE; ++j)
-                grid[i][j] = PositionTypes.EMPTY.getType();
+                grid[i][j] = PositionTypes.EMPTY.type();
 
         // Place the ships in the grid, using the placement map
         for (Map.Entry<Ship, Placement> entry : ships.entrySet()) {
@@ -89,7 +89,7 @@ public class GameBoard {
         if (placement.alignment() == Placement.Alignment.HORIZONTAL) {
             int constAxis = placement.from().y();
             for (int x = placement.from().x(); x < placement.to().x(); x++) {
-                if (grid[x][constAxis] != PositionTypes.EMPTY.getType()) {
+                if (grid[x][constAxis] != PositionTypes.EMPTY.type()) {
                     throw new StateException("Position already occupied by another ship");
                 }
                 grid[x][constAxis] = ship.id();
@@ -102,7 +102,7 @@ public class GameBoard {
         if (placement.alignment() == Placement.Alignment.VERTICAL) {
             int constAxis = placement.from().x();
             for (int y = placement.from().y(); y < placement.to().y(); y++) {
-                if (grid[constAxis][y] == PositionTypes.EMPTY.getType()) {
+                if (grid[constAxis][y] == PositionTypes.EMPTY.type()) {
                     throw new StateException("Position already occupied by another ship");
                 }
                 grid[constAxis][y] = ship.id();
@@ -148,7 +148,26 @@ public class GameBoard {
 
         if (!initialized) initialize();
 
-        return TurnTypes.MISS;
+        int state = gameGrid[c.x()][c.y()];
+        if (state == PositionTypes.PLAYED.type() || state == PositionTypes.SUNK.type())
+            throw new StateException("Coordinates " + c + " have already been played");
+
+        // Find the entry which has provided coordinates
+        Optional<Map.Entry<Ship, Placement>> obj = ships.entrySet().stream().filter(
+                e-> e.getValue().isInScope(c)
+        ).findFirst();
+
+        // Mark the state in the game grid
+        if (!obj.isPresent()) {
+            gameGrid[c.x()][c.y()] = PositionTypes.PLAYED.type();
+
+            return TurnTypes.MISS;
+        } else {
+            gameGrid[c.x()][c.y()] = PositionTypes.SUNK.type();
+
+            Ship ship = obj.get().getKey();
+            return (ship.hit() == 0) ? TurnTypes.DESTROYED : TurnTypes.HIT;
+        }
     }
 
     /**

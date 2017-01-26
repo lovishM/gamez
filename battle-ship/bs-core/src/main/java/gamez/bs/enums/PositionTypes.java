@@ -6,12 +6,12 @@ package gamez.bs.enums;
  * @author lovish
  */
 public enum PositionTypes {
-    EMPTY(0), SUNK(-1);
+    EMPTY(0), PLAYED(1), SUNK(-1);
 
     int type;
     PositionTypes(int type) {
         this.type = type;
     }
 
-    public int getType() { return type; }
+    public int type() { return type; }
 }
