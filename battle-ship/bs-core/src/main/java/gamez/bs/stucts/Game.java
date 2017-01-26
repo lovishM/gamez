@@ -45,21 +45,6 @@ public class Game implements Comparable<Game> {
     }
 
     /**
-     * Place the ships on the board having provided placement
-     *
-     * @param   player              Player trying to place his/her ship
-     * @param   ship                Type of the ship to be placed
-     * @param   placement           Board placement
-     * @throws  StateException      Exception encountered while operating on the board
-     */
-    public void placeShip(Player player, ShipTypes ship, GameBoard.Placement placement) throws StateException {
-        if (!isPresent(player))
-            throw new StateException("Player trying to place the ship not found");
-
-        player.placeShip(ship, placement);
-    }
-
-    /**
      * Watch the board of the player
      *
      * @param   player              Player trying to see his board
@@ -90,7 +75,7 @@ public class Game implements Comparable<Game> {
      * @return  GameState           Current state of the game
      * @throws  StateException      Exception encountered if any
      */
-    public GameState playTurn(Player player, GameBoard.Coordinates c) throws StateException {
+    public GameState playTurn(Player player) throws StateException {
 
         if (state != GameState.RUNNING) throw new StateException("Game is already over, cannot play anymore turns");
         if (!player.equals(getTurn()))
@@ -98,7 +83,7 @@ public class Game implements Comparable<Game> {
 
         Player other = (currentTurn) ? firstPlayer : secondPlayer;
 
-        int destroyed = player.consumeMyTurn(other.hisTurn(c));
+        int destroyed = player.consumeMyTurn(other.hisTurn(player.getNextTurn()));
         if (destroyed == ShipTypes.values().length) {
             state = GameState.WON;
         }

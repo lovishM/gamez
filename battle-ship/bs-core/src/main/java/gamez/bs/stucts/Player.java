@@ -11,8 +11,9 @@ import gamez.bs.exceptions.StateException;
  */
 public class Player implements Comparable<Player> {
 
-    private String name;
-    private String id;
+    protected String name;
+    protected String id;
+    protected GameBoard.Coordinates nextTurn;
 
     private int myFullHits;
 
@@ -36,10 +37,10 @@ public class Player implements Comparable<Player> {
     int myFullHits() { return myFullHits; }
 
     // Place ships on the board
-    void placeShip(ShipTypes type, GameBoard.Placement placement) throws StateException { this.board.place(type, placement); }
+    public void placeShip(ShipTypes type, GameBoard.Placement placement) throws StateException { this.board.place(type, placement); }
 
     // Get the board ready to play
-    void getReady() throws StateException { this.board.initialize(); }
+    protected void getReady() throws StateException { this.board.initialize(); }
 
     // Show the board on the user screen
     int[][] seeBoard() { return this.board.getCurrentGridPlacement(); }
@@ -60,6 +61,9 @@ public class Player implements Comparable<Player> {
 
         return myFullHits;
     }
+
+    protected GameBoard.Coordinates getNextTurn() { return this.nextTurn; }
+    public void setNextTurn(GameBoard.Coordinates c) { this.nextTurn = c; }
 
     @Override
     public boolean equals(Object o) {

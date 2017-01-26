@@ -60,7 +60,7 @@ public class PaintGame {
 
                 if (aGrid[i][j] == PositionTypes.EMPTY.type()) System.out.print(" . ");
                 else if (aGrid[i][j] == PositionTypes.PLAYED.type()) System.out.print(" * ");
-                else if (aGrid[i][j] == PositionTypes.SUNK.type()) System.out.print("-#-");
+                else if (aGrid[i][j] == PositionTypes.SUNK.type()) System.out.print("XXX");
                 else System.out.print("-" + ((char) aGrid[i][j]) + "-");
 
                 if (j == (GameBoard.MAX_Y_SIZE -1)) System.out.print("|");
@@ -68,16 +68,16 @@ public class PaintGame {
 
             printPaddding(' ');
 
-            for (int k = 0; k < GameBoard.MAX_Y_SIZE; ++k) {
+            for (j = 0; j < GameBoard.MAX_Y_SIZE; ++j) {
 
-                if (k == 0) System.out.print("|");
+                if (j == 0) System.out.print("|");
 
-                if (bGrid[i][k] == PositionTypes.EMPTY.type()) System.out.print(" . ");
-                else if (bGrid[i][k] == PositionTypes.PLAYED.type()) System.out.print(" * ");
-                else if (bGrid[i][k] == PositionTypes.SUNK.type()) System.out.print("-#-");
-                else System.out.print("-" + ((char) bGrid[i][k]) + "-");
+                if (bGrid[i][j] == PositionTypes.EMPTY.type()) System.out.print(" . ");
+                else if (bGrid[i][j] == PositionTypes.PLAYED.type()) System.out.print(" * ");
+                else if (bGrid[i][j] == PositionTypes.SUNK.type()) System.out.print("XXX");
+                else System.out.print("-" + ((char) bGrid[i][j]) + "-");
 
-                if (k == (GameBoard.MAX_Y_SIZE -1)) System.out.print("|");
+                if (j == (GameBoard.MAX_Y_SIZE -1)) System.out.print("|");
             }
             System.out.println();
         }
