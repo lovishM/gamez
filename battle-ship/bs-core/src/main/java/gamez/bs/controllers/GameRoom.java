@@ -17,6 +17,8 @@ public class GameRoom {
     private ConcurrentSkipListSet<Player> lounge = new ConcurrentSkipListSet<>();
     private ConcurrentSkipListSet<Game> runningGames = new ConcurrentSkipListSet<>();
 
+    private ConcurrentSkipListSet<Player> registeredPlayers = new ConcurrentSkipListSet<>();
+
     /**
      * Finds a player in the lounge to begin the game
      * if not present adds the player in the lounge

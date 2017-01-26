@@ -16,7 +16,7 @@ public class Game implements Comparable<Game> {
     private Player firstPlayer;
     private Player secondPlayer;
 
-    private boolean currentTurn;
+    private boolean firstPlayerTurn = true;
 
     private GameState state = GameState.RUNNING;
 
@@ -26,6 +26,9 @@ public class Game implements Comparable<Game> {
 
         this.gameId = a.id() + "-" + b.id();
     }
+
+    public String getGameId() { return this.gameId; }
+    public GameState getGameState() { return this.state; }
 
     /**
      * Begins the game if both players are ready
@@ -63,35 +66,33 @@ public class Game implements Comparable<Game> {
      *
      * @return  Player      Player who's turn is due
      */
-    public Player getTurn() {
-        return currentTurn ? secondPlayer : firstPlayer;
-    }
+    public Player getPlayerWithDueTurn() { return firstPlayerTurn ? firstPlayer : secondPlayer; }
 
     /**
      * Plays the turn for the player, after validating his turn is due
      *
      * @param   player              Player who wants to play the turn
      * @param   c                   Coordinates of the game board
-     * @return  GameState           Current state of the game
+     * @return  FeedBack            FeedBack of the turn played
      * @throws  StateException      Exception encountered if any
      */
-    public GameState playTurn(Player player) throws StateException {
+    public FeedBack playTurn() throws StateException {
 
         if (state != GameState.RUNNING) throw new StateException("Game is already over, cannot play anymore turns");
-        if (!player.equals(getTurn()))
-            throw new StateException("Player " + player.id() + "'s turn is not due");
+        Player player = getPlayerWithDueTurn();
 
-        Player other = (currentTurn) ? firstPlayer : secondPlayer;
+        Player other = (firstPlayerTurn) ? firstPlayer : secondPlayer;
 
-        int destroyed = player.consumeMyTurn(other.hisTurn(player.getNextTurn()));
+        FeedBack feedBack = other.hisTurn(player.getNextTurn());
+        int destroyed = player.consumeMyTurn(feedBack.getTurnType());
         if (destroyed == ShipTypes.values().length) {
             state = GameState.WON;
         }
 
         // Flip the turn
-        currentTurn = !currentTurn;
+        firstPlayerTurn = !firstPlayerTurn;
 
-        return state;
+        return feedBack;
     }
 
     /**
@@ -112,8 +113,6 @@ public class Game implements Comparable<Game> {
         if (p.myFullHits() == ShipTypes.values().length) return GameState.WON;
         else return GameState.LOST;
     }
-
-    public String getGameId() { return this.gameId; }
 
     @Override
     public int compareTo(Game game) {

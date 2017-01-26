@@ -146,9 +146,9 @@ public class GameBoard {
      * Play the turn with the specified coordinates
      *
      * @param   c               Coordinates to be played by the user
-     * @return  TurnTypes       Type of the turn playes (hit, miss, destroyed)
+     * @return  FeedBack        Feedback of the turn played
      */
-    TurnTypes play(Coordinates c) throws StateException {
+    FeedBack play(Coordinates c) throws StateException {
 
         if (!initialized) initialize();
 
@@ -165,12 +165,14 @@ public class GameBoard {
         if (!obj.isPresent()) {
             gameGrid[c.x()][c.y()] = PositionTypes.PLAYED.type();
 
-            return TurnTypes.MISS;
+            return new FeedBack(TurnTypes.MISS, "Ooh, near miss!");
         } else {
             gameGrid[c.x()][c.y()] = PositionTypes.SUNK.type();
 
             Ship ship = obj.get().getKey();
-            return (ship.hit() == 0) ? TurnTypes.DESTROYED : TurnTypes.HIT;
+            return (ship.hit() == 0)
+                    ? new FeedBack(TurnTypes.DESTROYED, "Congratulations, you just destroyed the " + ship.type().name())
+                    : new FeedBack(TurnTypes.HIT, "Well done, you just got a cool HIT");
         }
     }
 

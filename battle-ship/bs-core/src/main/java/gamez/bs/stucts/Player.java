@@ -46,7 +46,7 @@ public class Player implements Comparable<Player> {
     int[][] seeBoard() { return this.board.getCurrentGridPlacement(); }
 
     // Play the user's turn
-    TurnTypes hisTurn(GameBoard.Coordinates c) throws StateException { return this.board.play(c); }
+    FeedBack hisTurn(GameBoard.Coordinates c) throws StateException { return this.board.play(c); }
 
     /**
      * Evaluate this player's turn and measure his success
