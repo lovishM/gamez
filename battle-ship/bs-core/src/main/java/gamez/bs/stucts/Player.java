@@ -9,7 +9,7 @@ import gamez.bs.exceptions.StateException;
  *
  * @author lovish
  */
-public class Player {
+public class Player implements Comparable<Player> {
 
     private String name;
     private String id;
@@ -64,5 +64,11 @@ public class Player {
     @Override
     public boolean equals(Object o) {
         return o == this || o instanceof Player && ((Player) o).id().equals(this.id());
+    }
+
+    @Override
+    public int compareTo(Player player) {
+        if (player.equals(this)) return 0;
+        return player.id().compareTo(this.id());
     }
 }

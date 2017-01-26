@@ -17,8 +17,8 @@ import java.util.Optional;
 public class GameBoard {
 
     // Define the range for x, y coordinates
-    private static final int MAX_X_SIZE = 10;
-    private static final int MAX_Y_SIZE = 10;
+    public static final int MAX_X_SIZE = 10;
+    public static final int MAX_Y_SIZE = 10;
 
     // Game grid on which the game would be played
     private int[][] gameGrid = new int[MAX_X_SIZE][MAX_Y_SIZE];

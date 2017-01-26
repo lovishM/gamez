@@ -9,7 +9,9 @@ import gamez.bs.exceptions.StateException;
  *
  * @author lovish
  */
-public class Game {
+public class Game implements Comparable<Game> {
+
+    private String gameId;
 
     private Player firstPlayer;
     private Player secondPlayer;
@@ -21,6 +23,8 @@ public class Game {
     public Game(Player a, Player b) {
         this.firstPlayer = a;
         this.secondPlayer = b;
+
+        this.gameId = a.id() + "-" + b.id();
     }
 
     /**
@@ -123,4 +127,19 @@ public class Game {
         if (p.myFullHits() == ShipTypes.values().length) return GameState.WON;
         else return GameState.LOST;
     }
+
+    public String getGameId() { return this.gameId; }
+
+    @Override
+    public int compareTo(Game game) {
+        if (this.equals(game)) return 0;
+        return game.getGameId().compareTo(this.getGameId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof Game && ((Game) o).getGameId().equals(this.getGameId());
+    }
+
+    public boolean isGameOver() { return (state != GameState.RUNNING); }
 }
