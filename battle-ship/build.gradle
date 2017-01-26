@@ -1,40 +1,47 @@
-group = 'gamez.master'
-version = 'SNAPSHOT'
+allprojects {
+    group = 'gamez.master'
+    version = 'SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'groovy'
+    apply plugin: 'java'
+    apply plugin: 'groovy'
 
-sourceSets {
-    main {
-        java {
-            srcDirs = []
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            groovy {
+                srcDirs = [
+                    'src/main/java',
+                    'src/main/groovy'
+                ]
+            }
+            resources {
+                'src/main/resources'
+            }
         }
-        groovy {
-            srcDirs = [
-                'src/main/java',
-                'src/main/groovy'
-            ]
-        }
-        resources {
-            'src/main/resources'
+        test {
+            java {
+                srcDirs = []
+            }
+            groovy {
+                srcDirs = [
+                    'src/test/java',
+                    'src/test/groovy'
+                ]
+            }
+            resources {
+                'src/test/resources'
+            }
         }
     }
-    test {
-        java {
-            srcDirs = []
-        }
-        groovy {
-            srcDirs = [
-                'src/test/java',
-                'src/test/groovy'
-            ]
-        }
-        resources {
-            'src/test/resources'
-        }
-    }
-}
 
-dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.6'
+    dependencies {
+        compile 'org.codehaus.groovy:groovy-all:2.4.6'
+    }
 }
