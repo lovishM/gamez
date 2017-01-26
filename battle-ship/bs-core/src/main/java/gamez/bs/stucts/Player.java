@@ -48,4 +48,9 @@ public class Player {
 
         return myFullHits;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof Player && ((Player) o).id().equals(this.id());
+    }
 }
